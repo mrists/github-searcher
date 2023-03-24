@@ -1,12 +1,13 @@
+import { FC } from 'react';
 import { InputProps } from '../../../types/types';
 
-function Input(props: InputProps) {
+const Input: FC<InputProps> = props => {
 	return (
 		<input
-			className={props.styleClass}
+			className={props.styleclass}
 			{...props}
 		/>
 	);
-}
+};
 
 export default Input;

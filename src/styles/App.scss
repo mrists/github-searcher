@@ -1,4 +1,6 @@
 @import '../../node_modules/normalize-scss/sass/normalize/import-now';
+@import 'variables';
+@import 'mixins-media';
 
 :root {
 	--bg-black: #202229;
@@ -54,7 +56,32 @@ body {
 .user-list {
 	background: var(--bg-gray);
 	width: 100%;
-	min-height: 80vh;
+	overflow: auto;
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--bg-black);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--blue);
+		border-radius: 20px;
+
+		&:hover {
+			background-color: #5c62b0;
+		}
+	}
+	@include height-md-min {
+		height: 80vh;
+	}
+	@include height-md-sm {
+		height: 75vh;
+	}
+	@include height-sm {
+		height: 70vh;
+	}
 	&__not-found {
 		padding: 0 15px;
 	}
@@ -71,19 +98,35 @@ body {
 	align-items: center;
 	background: var(--blue);
 	border: 2px solid var(--black);
+	@include sm-min {
+		font-size: 16px;
+	}
+	@include sm {
+		font-size: 14px;
+	}
 	&__img {
-		width: 50px;
-		height: 50px;
+		width: 3.125em;
+		height: 3.125em;
 	}
 	&__login {
 		margin: 0;
-		font-size: 1.2rem;
+		font-size: 1.2em;
+		@include sm {
+			max-width: 150px;
+			overflow: hidden;
+		}
 	}
 	&__id {
 		display: flex;
 		flex-direction: column;
 		width: 80px;
 		gap: 5px;
+		@include sm-min {
+			width: 80px;
+		}
+		@include sm {
+			width: 60px;
+		}
 	}
 }
 
@@ -98,8 +141,13 @@ body {
 		text-align: center;
 	}
 	&__link {
-		margin-left: 22%;
 		margin-bottom: 15px;
+		@include md-min {
+			margin-left: 22%;
+		}
+		@include md-sm {
+			text-align: center;
+		}
 		a {
 			text-decoration: none;
 			color: var(--white);
@@ -118,7 +166,12 @@ body {
 		border: none;
 		outline: none;
 		color: var(--white);
-		font-size: 20px;
+		@include sm-min {
+			font-size: 20px;
+		}
+		@include sm {
+			font-size: 15px;
+		}
 		&::placeholder {
 			color: var(--gray-light);
 			margin: 0;
@@ -134,11 +187,29 @@ body {
 
 .user-info {
 	display: flex;
-	justify-content: space-evenly;
 	margin-bottom: 15px;
+	@include md-min {
+		justify-content: space-evenly;
+	}
+	@include md {
+		flex-direction: column;
+		gap: 20px;
+	}
+	&__img-folder {
+		@include md-sm {
+			display: flex;
+			justify-content: center;
+		}
+	}
 	&__img {
-		width: 250px;
-		height: 250px;
+		@include sm-min {
+			width: 250px;
+			height: 250px;
+		}
+		@include sm {
+			width: 200px;
+			height: 200px;
+		}
 	}
 
 	&__description {
@@ -148,6 +219,9 @@ body {
 		p {
 			margin: 0;
 			letter-spacing: 0.05rem;
+			@include md-sm {
+				text-align: center;
+			}
 		}
 	}
 }
@@ -156,6 +230,26 @@ body {
 	max-width: 90vw;
 	margin: 0 auto;
 	color: var(--white);
+	height: 50vh;
+	overflow: auto;
+	padding-right: 2px;
+	margin-bottom: 40px;
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--bg-black);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--dark-blue);
+		border-radius: 20px;
+
+		&:hover {
+			background-color: #5c62b0;
+		}
+	}
 	&-item {
 		padding: 10px;
 		display: flex;
@@ -173,5 +267,23 @@ body {
 			width: 60px;
 			gap: 5px;
 		}
+	}
+	&__not-found,
+	&__loading {
+		padding-left: 10px;
+	}
+	&__loading {
+		overflow: hidden;
+		white-space: nowrap;
+		animation: expand 1s infinite;
+	}
+}
+
+@keyframes expand {
+	from {
+		width: 0;
+	}
+	to {
+		width: 30%;
 	}
 }

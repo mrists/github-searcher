@@ -16,8 +16,8 @@ export class UserService {
     return response;
   }
 
-  static async getRepositories<T>(name: string): Promise<T | any> {
-    const url = `https://api.github.com/users/${name}/repos`;
+  static async getRepositories<T>(login: string): Promise<T | any> {
+    const url = `https://api.github.com/users/${login}/repos`;
 
     const response = await axios.get<T>(url);
 

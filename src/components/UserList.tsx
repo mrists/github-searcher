@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import { UserListProps } from '../types/types';
 
-function UserList({ users, renderUsers, fetched, error }: UserListProps) {
+const UserList: FC<UserListProps> = ({ users, renderUsers, fetched, error }) => {
 	return (
 		<div className='user-list'>
 			{users.length ? (
@@ -13,6 +14,6 @@ function UserList({ users, renderUsers, fetched, error }: UserListProps) {
 			{error && !users.length && <h3 className='user-list__not-found'>{error}</h3>}
 		</div>
 	);
-}
+};
 
 export default UserList;

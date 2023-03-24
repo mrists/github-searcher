@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserService } from '../../API/UserService';
-import { useFetching } from '../../hooks/useFetching';
-import '../../styles/App.scss';
-import { IUser } from '../../types/types';
-import Input from '../UI/input/Input';
-import User from '../User';
-import UserList from '../UserList';
+import { UserService } from '../API/UserService';
+import Input from '../components/UI/input/Input';
+import User from '../components/User';
+import UserList from '../components/UserList';
+import { useDebounce } from '../hooks/useDebounce';
+import { useFetching } from '../hooks/useFetching';
+import '../styles/App.scss';
+import { IUser } from '../types/types';
 
-function Searcher() {
+const Searcher: FC = () => {
 	const [users, setUsers] = useState<IUser[]>([]);
 	const [userLogin, setUserLogin] = useState<string>('');
+	const debouncedSearchTerm = useDebounce<string>(userLogin, 500);
 	const [fetched, setFetched] = useState<boolean>(false);
 
 	const [fetchUsers, error] = useFetching(async () => {
@@ -20,9 +22,9 @@ function Searcher() {
 			return;
 		}
 
-		const response = await UserService.getUsers(userLogin);
+		const { data } = await UserService.getUsers(userLogin);
 
-		const { items } = response.data;
+		const { items } = data;
 
 		setFetched(true);
 		setUsers([...items]);
@@ -31,12 +33,12 @@ function Searcher() {
 	useEffect(() => {
 		fetchUsers();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userLogin]);
+	}, [debouncedSearchTerm]);
 
 	return (
 		<div className='searcher'>
 			<Input
-				styleClass='searcher__input'
+				styleclass='searcher__input'
 				value={userLogin}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserLogin(e.target.value.trim())}
 				type='text'
@@ -62,6 +64,6 @@ function Searcher() {
 			></UserList>
 		</div>
 	);
-}
+};
 
 export default Searcher;

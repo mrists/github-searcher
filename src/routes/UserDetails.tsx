@@ -1,52 +1,53 @@
-import { useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { UserService } from '../../API/UserService';
-import { useFetching } from '../../hooks/useFetching';
-import { IRepository, User } from '../../types/types';
-import RepositoriesList from '../RepositoriesList';
-import Repository from '../Repository';
-import Input from '../UI/input/Input';
+import { UserService } from '../API/UserService';
+import RepositoriesList from '../components/RepositoriesList';
+import Repository from '../components/Repository';
+import Input from '../components/UI/input/Input';
+import UserInfo from '../components/UserInfo';
+import { useDebounce } from '../hooks/useDebounce';
+import { useRepos } from '../hooks/useRepos';
+import { IRepository, User } from '../types/types';
 
-function UserDetails() {
-	const { id } = useParams();
+const UserDetails: FC = () => {
+	const { id } = useParams<string>();
 	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [isRepositoriesLoading, setIsRepositoriesLoading] = useState<boolean>(true);
+	const debouncedSearchQuery = useDebounce<string>(searchQuery, 500);
 	const [user, setUser] = useState<User | any>({});
-	const [repositories, setRepositories] = useState([]);
-	// Если типизировать как IRepository[], то ничего не выдает
-	// const [searchedRepositories, setSearchedRepositories] = useState<IRepository[]>([]);
-	const [fetchUser, errorUser] = useFetching(async () => {
+	const [repositories, setRepositories] = useState<IRepository[]>([]);
+	const [errors, setErrors] = useState<Error | any>({ user: '', repositories: '' });
+	const fetchUserAndRepositories = () => {
 		if (!id) return;
 
-		const { data } = await UserService.getUserByID(id);
-
-		setUser(data);
-	});
-	const [fetchRepositories, errorRepositories] = useFetching(async () => {
-		const { data } = await UserService.getRepositories(user.login);
-
-		setRepositories(data);
-	});
+		UserService.getUserByID(id)
+			.then(({ data }) => {
+				setUser(data);
+				setErrors({ ...errors, user: '' });
+				UserService.getRepositories(data.login)
+					.then(({ data }) => {
+						setRepositories(data);
+						setErrors({ ...errors, repositories: '' });
+					})
+					.catch((error: unknown) => {
+						setErrors({ ...errors, repositories: (error as Error).message });
+					})
+					.finally(() => {
+						setIsRepositoriesLoading(false);
+					});
+			})
+			.catch((error: unknown) => {
+				setErrors({ ...errors, user: (error as Error).message });
+			});
+	};
 
 	useEffect(() => {
-		fetchUser();
-		fetchRepositories();
+		fetchUserAndRepositories();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// useMemo(() => {
-	// 	console.log('works');
-	// 	searchRepository(searchedRepositoryQuery);
-	// }, [searchedRepositoryQuery]);
-
-	const searchedRepositories = useMemo(() => {
-		if (!searchQuery) {
-			return repositories;
-		}
-		const resultRepositories = repositories.filter((repository: IRepository) =>
-			repository.name.toLowerCase().includes(searchQuery.toLowerCase())
-		);
-		return resultRepositories;
-	}, [searchQuery, repositories]);
+	const searchedRepositories = useRepos(repositories, debouncedSearchQuery);
 
 	function openUserBlog(e: React.MouseEvent, url: string) {
 		e.preventDefault();
@@ -56,47 +57,14 @@ function UserDetails() {
 		window.open(finalUrl, '_blank', 'noreferrer');
 	}
 
-	// function searchRepository(query: string) {
-	// 	if (!query) {
-	// 		console.log('repositories:', repositories);
-	// 		setSearchedRepositories(repositories);
-	// 		console.log('searchedRepositories', searchedRepositories);
-	// 		return;
-	// 	}
-	// 	const resultRepositories = repositories.filter((repository: IRepository) =>
-	// 		repository.name.toLowerCase().includes(query.toLowerCase())
-	// 	);
-	// 	setSearchedRepositories(resultRepositories);
-	// }
-
 	return (
 		<>
 			<div className='user-details'>
-				{errorUser ? (
-					<h3 className='user-details__error'>{errorUser}</h3>
+				{errors.user ? (
+					<h3 className='user-details__error'>{errors.user}</h3>
 				) : (
 					<>
-						<div className='user-info'>
-							<div>
-								<img
-									className='user-info__img'
-									src={user.avatar_url}
-									alt={user.login}
-								/>
-							</div>
-							<div className='user-info__description'>
-								<p>User name: {user.login}</p>
-								<p>Name: {user.name}</p>
-								<p>
-									Location: {user.location ? user.location : 'The user did not specify a location'}
-								</p>
-								<p>Followers: {user.followers}</p>
-								<p>Following: {user.following}</p>
-								<p>Company: {user.company ? `"${user.company}"` : "The user hasn't a company"}</p>
-								<p>Public repositories: {user.public_repos}</p>
-								<p>Public gists: {user.public_gists}</p>
-							</div>
-						</div>
+						<UserInfo user={user}></UserInfo>
 						<div className='user-details__link'>
 							{user.blog ? (
 								<a
@@ -111,7 +79,7 @@ function UserDetails() {
 						</div>
 						<div className='user-details__input'>
 							<Input
-								styleClass='user-details__input-item'
+								styleclass='user-details__input-item'
 								type='text'
 								value={searchQuery}
 								placeholder="Search for User's Repositories"
@@ -148,9 +116,11 @@ function UserDetails() {
 			</div>
 			<RepositoriesList
 				repositories={searchedRepositories}
-				error={errorRepositories}
+				isRepositoriesLoading={isRepositoriesLoading}
+				error={errors.repositories}
 				renderRepositories={(repository: IRepository) => (
 					<Repository
+						key={repository.id}
 						name={repository.name}
 						forks={repository.forks}
 						stargazers_count={repository.stargazers_count}
@@ -159,6 +129,6 @@ function UserDetails() {
 			></RepositoriesList>
 		</>
 	);
-}
+};
 
 export default UserDetails;

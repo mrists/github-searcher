@@ -129,6 +129,7 @@ export interface RepositoriesListProps {
   repositories: IRepository[],
   renderRepositories: (repository: IRepository) => React.ReactNode,
   error: string,
+  isRepositoriesLoading: boolean,
 }
 
 export interface RepositoryProps {
@@ -138,7 +139,7 @@ export interface RepositoryProps {
 }
 
 export interface InputProps {
-  styleClass: string,
+  styleclass: string,
   type: string,
   placeholder?: string,
   value: string,
@@ -157,4 +158,9 @@ export type User = {
   public_repos: number,
   public_gists: number,
   blog: string,
+}
+
+export type Error = {
+  user: string,
+  repositories: string,
 }

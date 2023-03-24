@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import { RepositoryProps } from '../types/types';
 
-function Repository({ name, forks, stargazers_count }: RepositoryProps) {
+const Repository: FC<RepositoryProps> = ({ name, forks, stargazers_count }) => {
 	return (
 		<div className='repositories-item'>
 			<p className='repositories-item__name'>{name}</p>
@@ -10,6 +11,6 @@ function Repository({ name, forks, stargazers_count }: RepositoryProps) {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Repository;

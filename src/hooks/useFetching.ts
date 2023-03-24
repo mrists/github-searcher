@@ -7,8 +7,8 @@ export function useFetching(cb: () => Promise<void>): any[] {
     try {
       await cb()
       setError('')
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError((err as Error).message)
     }
   }
 
