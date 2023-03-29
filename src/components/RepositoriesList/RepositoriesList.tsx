@@ -1,12 +1,24 @@
 import { FC } from 'react';
-import { RepositoriesListProps } from '../types/types';
+import { IRepository } from '../../types/types';
+import Repository from './components/Repository/Repository';
+import { RepositoriesListProps } from './types';
 
 const RepositoriesList: FC<RepositoriesListProps> = ({
 	repositories,
-	renderRepositories,
 	error,
 	isRepositoriesLoading,
 }) => {
+	const renderRepositories = (repository: IRepository): React.ReactNode => {
+		return (
+			<Repository
+				key={repository.id}
+				name={repository.name}
+				forks={repository.forks}
+				stargazers_count={repository.stargazers_count}
+			/>
+		);
+	};
+
 	return (
 		<div className='repositories'>
 			{repositories.length ? (

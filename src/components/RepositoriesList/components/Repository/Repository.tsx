@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { RepositoryProps } from '../types/types';
+import { RepositoryProps } from '../../../../types/types';
 
 const Repository: FC<RepositoryProps> = ({ name, forks, stargazers_count }) => {
 	return (

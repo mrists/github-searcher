@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { UserProps } from '../types/types';
+import { UserProps } from './types';
 
 const User: FC<UserProps> = ({ login, avatar_url, id }) => {
 	return (

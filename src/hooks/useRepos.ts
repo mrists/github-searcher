@@ -5,7 +5,6 @@ export function useRepos(repositories: IRepository[], query: string): IRepositor
   const searchedRepositories = useMemo(() => {
     return repositories.filter((repository: IRepository) =>
       repository.name.toLowerCase().includes(query.toLowerCase()))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repositories, query]);
 
   return searchedRepositories;

@@ -1,9 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { UserService } from '../API/UserService';
 import Input from '../components/UI/input/Input';
-import User from '../components/User';
-import UserList from '../components/UserList';
+import UserList from '../components/UserList/UserList';
 import { useDebounce } from '../hooks/useDebounce';
 import { useFetching } from '../hooks/useFetching';
 import '../styles/App.scss';
@@ -32,7 +30,6 @@ const Searcher: FC = () => {
 
 	useEffect(() => {
 		fetchUsers();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedSearchTerm]);
 
 	return (
@@ -43,25 +40,12 @@ const Searcher: FC = () => {
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserLogin(e.target.value.trim())}
 				type='text'
 				placeholder='Enter the user login...'
-			></Input>
+			/>
 			<UserList
 				error={error}
 				fetched={fetched}
 				users={users}
-				renderUsers={(user: IUser) => (
-					<Link
-						className='user-list__link'
-						key={user.id}
-						to={`user/${user.id}`}
-					>
-						<User
-							avatar_url={user.avatar_url}
-							login={user.login}
-							id={user.id}
-						></User>
-					</Link>
-				)}
-			></UserList>
+			/>
 		</div>
 	);
 };

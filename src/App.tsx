@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Layout from './components/Layout';
+import Layout from './Layout/Layout';
 import Searcher from './routes/Searcher';
 import UserDetails from './routes/UserDetails';
 import './styles/App.scss';

@@ -98,6 +98,7 @@ body {
 	align-items: center;
 	background: var(--blue);
 	border: 2px solid var(--black);
+	cursor: pointer;
 	@include sm-min {
 		font-size: 16px;
 	}

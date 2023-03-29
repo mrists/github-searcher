@@ -12,6 +12,7 @@ export interface IUser {
   blog: string,
 }
 
+
 export interface IRepository {
   allow_forking: boolean,
   archive_url: string,
@@ -110,26 +111,6 @@ export interface IRepository {
   watchers: number,
   watchers_count: number,
   web_commit_signoff_required: boolean,
-}
-
-export interface UserProps {
-  login: string,
-  avatar_url: string,
-  id: number
-}
-
-export interface UserListProps {
-  users: IUser[],
-  renderUsers: (user: IUser) => React.ReactNode,
-  fetched: boolean,
-  error: string,
-}
-
-export interface RepositoriesListProps {
-  repositories: IRepository[],
-  renderRepositories: (repository: IRepository) => React.ReactNode,
-  error: string,
-  isRepositoriesLoading: boolean,
 }
 
 export interface RepositoryProps {
