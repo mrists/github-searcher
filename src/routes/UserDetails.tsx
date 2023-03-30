@@ -89,7 +89,7 @@ const UserDetails: FC = () => {
 							<Link to={'/'}>
 								<img
 									className='user-details__btn'
-									src={process.env.PUBLIC_URL + '/images/button.png'}
+									src='/images/button.png'
 									alt=''
 								/>
 							</Link>
