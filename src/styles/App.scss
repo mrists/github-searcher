@@ -259,6 +259,8 @@ body {
 		background: var(--dark-blue);
 		border: 3px solid var(--black);
 		font-size: 1.2rem;
+		text-decoration: none;
+		color: var(--white);
 		&:not(:last-of-type) {
 			margin-bottom: -3px;
 		}

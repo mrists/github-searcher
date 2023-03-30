@@ -15,6 +15,7 @@ const RepositoriesList: FC<RepositoriesListProps> = ({
 				name={repository.name}
 				forks={repository.forks}
 				stargazers_count={repository.stargazers_count}
+				html_url={repository.html_url}
 			/>
 		);
 	};

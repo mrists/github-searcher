@@ -25,6 +25,7 @@ const UserDetails: FC = () => {
 				setErrors({ ...errors, user: '' });
 				UserService.getRepositories(data.login)
 					.then(({ data }) => {
+						console.log(data);
 						setRepositories(data);
 						setErrors({ ...errors, repositories: '' });
 					})

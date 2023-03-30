@@ -113,12 +113,6 @@ export interface IRepository {
   web_commit_signoff_required: boolean,
 }
 
-export interface RepositoryProps {
-  name: string,
-  forks: number,
-  stargazers_count: number,
-}
-
 export interface InputProps {
   styleclass: string,
   type: string,
