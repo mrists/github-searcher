@@ -25,7 +25,7 @@ const Searcher: FC = () => {
 		const { items } = data;
 
 		setFetched(true);
-		setUsers([...items]);
+		setUsers(items);
 	});
 
 	useEffect(() => {

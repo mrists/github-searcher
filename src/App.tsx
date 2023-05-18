@@ -9,16 +9,16 @@ function App() {
 		<Routes>
 			<Route
 				path='/'
-				element={<Layout></Layout>}
+				element={<Layout />}
 			>
 				<Route
 					index
-					element={<Searcher></Searcher>}
-				></Route>
+					element={<Searcher />}
+				/>
 				<Route
 					path='user/:id'
-					element={<UserDetails></UserDetails>}
-				></Route>
+					element={<UserDetails />}
+				/>
 				<Route
 					path='*'
 					element={<Navigate to='/' />}

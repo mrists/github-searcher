@@ -7,6 +7,7 @@ const Repository: FC<RepositoryProps> = ({ name, forks, stargazers_count, html_u
 			href={html_url}
 			target='_blank'
 			className='repositories-item'
+			rel='noreferrer'
 		>
 			<p className='repositories-item__name'>{name}</p>
 			<div className='repositories-item__info'>

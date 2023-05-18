@@ -121,20 +121,6 @@ export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
-export type User = {
-  login: string,
-  id: number,
-  avatar_url: string,
-  name: string,
-  location: string,
-  followers: number,
-  following: number,
-  company: string,
-  public_repos: number,
-  public_gists: number,
-  blog: string,
-}
-
 export type Error = {
   user: string,
   repositories: string,

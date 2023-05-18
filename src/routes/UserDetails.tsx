@@ -3,19 +3,24 @@ import { Link, useParams } from 'react-router-dom';
 import { UserService } from '../API/UserService';
 import RepositoriesList from '../components/RepositoriesList';
 import Input from '../components/UI/input/Input';
-import UserInfo from '../components/UserInfo';
+import UserInfo from '../components/UserInfo/UserInfo';
 import { useDebounce } from '../hooks/useDebounce';
 import { useRepos } from '../hooks/useRepos';
-import { IRepository, User } from '../types/types';
+import { IRepository, IUser } from '../types/types';
+
+interface IError {
+	user: string;
+	repositories: string;
+}
 
 const UserDetails: FC = () => {
 	const { id } = useParams<string>();
 	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [isRepositoriesLoading, setIsRepositoriesLoading] = useState<boolean>(true);
 	const debouncedSearchQuery = useDebounce<string>(searchQuery, 500);
-	const [user, setUser] = useState<User | any>({});
+	const [user, setUser] = useState<IUser>({} as IUser);
 	const [repositories, setRepositories] = useState<IRepository[]>([]);
-	const [errors, setErrors] = useState<Error | any>({ user: '', repositories: '' });
+	const [errors, setErrors] = useState<IError>({ user: '', repositories: '' });
 	const fetchUserAndRepositories = () => {
 		if (!id) return;
 

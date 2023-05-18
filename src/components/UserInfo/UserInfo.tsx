@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { User } from '../types/types';
+import { IUserInfoProps } from './types';
 
-const UserDetails: FC<User | any> = ({ user }) => {
+const UserInfo: FC<IUserInfoProps> = ({ user }) => {
 	return (
 		<div className='user-info'>
 			<div className='user-info__img-folder'>
@@ -25,4 +25,4 @@ const UserDetails: FC<User | any> = ({ user }) => {
 	);
 };
 
-export default UserDetails;
+export default UserInfo;
